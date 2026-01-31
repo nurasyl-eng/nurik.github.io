@@ -1,0 +1,1744 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Полное руководство по созданию сайтов</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #3498db;
+            --secondary: #2c3e50;
+            --accent: #e74c3c;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+            --success: #2ecc71;
+            --warning: #f39c12;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+            padding-bottom: 40px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        header {
+            background: linear-gradient(to right, var(--secondary), var(--primary));
+            color: white;
+            padding: 50px 0;
+            text-align: center;
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            margin-bottom: 40px;
+        }
+        
+        header h1 {
+            font-size: 2.8rem;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+        
+        header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .main-tabs {
+            display: flex;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+        
+        .main-tab {
+            flex: 1;
+            min-width: 200px;
+            padding: 20px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--secondary);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+        
+        .main-tab:hover {
+            background-color: #f8f9fa;
+        }
+        
+        .main-tab.active {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .content-section {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
+            margin-bottom: 40px;
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .content-section.active {
+            display: block;
+        }
+        
+        h2 {
+            color: var(--secondary);
+            margin-bottom: 25px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid var(--primary);
+            font-size: 2.2rem;
+        }
+        
+        h3 {
+            color: var(--primary);
+            margin: 30px 0 15px;
+            font-size: 1.6rem;
+        }
+        
+        h4 {
+            color: var(--secondary);
+            margin: 20px 0 10px;
+            font-size: 1.3rem;
+        }
+        
+        p {
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+        
+        .inner-tabs {
+            display: flex;
+            background: linear-gradient(to right, #3498db, #2c3e50);
+            border-radius: 8px;
+            overflow: hidden;
+            margin: 25px 0;
+        }
+        
+        .inner-tab {
+            padding: 15px 25px;
+            background: transparent;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+        
+        .inner-tab:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .inner-tab.active {
+            background: white;
+            color: #2c3e50;
+        }
+        
+        .inner-content {
+            padding: 25px;
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .inner-content.active {
+            display: block;
+        }
+        
+        .card-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-top: 4px solid var(--primary);
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .card h3 {
+            color: var(--secondary);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .card h3 i {
+            margin-right: 10px;
+            color: var(--primary);
+        }
+        
+        .step-number {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 32px;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+        
+        .tools-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .tool {
+            background: #f8f9fa;
+            padding: 12px 20px;
+            border-radius: 50px;
+            font-weight: 600;
+            color: var(--secondary);
+            border: 1px solid #eaeaea;
+            transition: all 0.3s ease;
+        }
+        
+        .tool:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        .code-block {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+        
+        .tag {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+        
+        .attribute {
+            color: #3498db;
+        }
+        
+        .value {
+            color: #2ecc71;
+        }
+        
+        .comment {
+            color: #95a5a6;
+        }
+        
+        .html-element {
+            display: flex;
+            align-items: flex-start;
+            margin: 25px 0;
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+            border-left: 5px solid var(--primary);
+        }
+        
+        .element-icon {
+            background: var(--primary);
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            margin-right: 25px;
+            flex-shrink: 0;
+        }
+        
+        .element-content {
+            flex: 1;
+        }
+        
+        .platform-guide {
+            margin: 30px 0;
+            background: #f8f9fa;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .platform-header {
+            background: var(--secondary);
+            color: white;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .platform-header i {
+            font-size: 1.8rem;
+        }
+        
+        .platform-steps {
+            padding: 25px;
+        }
+        
+        .step {
+            display: flex;
+            margin-bottom: 25px;
+            padding-bottom: 25px;
+            border-bottom: 1px dashed #ddd;
+        }
+        
+        .step:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        
+        .visual-guide {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .screenshot {
+            flex: 1;
+            min-width: 300px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .screenshot img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        
+        .screenshot-caption {
+            background: var(--secondary);
+            color: white;
+            padding: 12px;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+        
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .comparison-table th {
+            background: var(--primary);
+            color: white;
+            padding: 18px;
+            text-align: left;
+        }
+        
+        .comparison-table td {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .comparison-table tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+        
+        .highlight {
+            background: #fffde7;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #ffc107;
+            margin: 20px 0;
+        }
+        
+        .note {
+            background: #e8f4fc;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid var(--primary);
+            margin: 20px 0;
+        }
+        
+        .resource-list {
+            margin-left: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .resource-list li {
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+            color: #666;
+            font-size: 0.95rem;
+        }
+        
+        @media (max-width: 768px) {
+            .main-tabs, .inner-tabs {
+                flex-direction: column;
+            }
+            
+            .main-tab, .inner-tab {
+                min-width: 100%;
+                justify-content: flex-start;
+            }
+            
+            .content-section {
+                padding: 25px;
+            }
+            
+            .html-element {
+                flex-direction: column;
+            }
+            
+            .element-icon {
+                margin-right: 0;
+                margin-bottom: 15px;
+            }
+            
+            header h1 {
+                font-size: 2.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1><i class="fas fa-code"></i> Полное руководство по созданию сайтов</h1>
+            <p>От основ HTML до публикации вашего первого сайта. Всё, что нужно знать начинающему веб-разработчику.</p>
+        </div>
+    </header>
+    
+    <div class="container">
+        <div class="main-tabs">
+            <button class="main-tab active" data-section="basics">
+                <i class="fas fa-graduation-cap"></i> Основы
+            </button>
+            <button class="main-tab" data-section="html-structure">
+                <i class="fas fa-file-code"></i> HTML Структура
+            </button>
+            <button class="main-tab" data-section="html-css">
+                <i class="fab fa-html5"></i> HTML & CSS
+            </button>
+            <button class="main-tab" data-section="javascript">
+                <i class="fab fa-js-square"></i> JavaScript
+            </button>
+            <button class="main-tab" data-section="design">
+                <i class="fas fa-paint-brush"></i> Дизайн
+            </button>
+            <button class="main-tab" data-section="publishing">
+                <i class="fas fa-cloud-upload-alt"></i> Публикация
+            </button>
+        </div>
+        
+        <!-- Секция Основы -->
+        <section id="basics" class="content-section active">
+            <h2><i class="fas fa-graduation-cap"></i> Основы создания сайтов</h2>
+            <p>Создание сайта может показаться сложной задачей, но на самом деле это процесс, который можно разбить на простые шаги. В этом разделе мы рассмотрим фундаментальные понятия веб-разработки.</p>
+            
+            <div class="inner-tabs">
+                <button class="inner-tab active" data-inner="what-is-website">Что такое сайт</button>
+                <button class="inner-tab" data-inner="three-tech">Три технологии</button>
+                <button class="inner-tab" data-inner="how-browser">Как работает браузер</button>
+            </div>
+            
+            <div class="inner-content active" id="what-is-website">
+                <h3>Что такое веб-сайт?</h3>
+                <p>Веб-сайт — это набор связанных веб-страниц, доступных через интернет. Каждая страница создается с использованием языков разметки и программирования, которые понимают веб-браузеры.</p>
+                
+                <div class="card-container">
+                    <div class="card">
+                        <h3><i class="fas fa-server"></i> Сервер</h3>
+                        <p>Компьютер, на котором хранятся файлы сайта и который отвечает на запросы пользователей, отправляя им эти файлы.</p>
+                    </div>
+                    <div class="card">
+                        <h3><i class="fas fa-laptop"></i> Клиент</h3>
+                        <p>Устройство пользователя (компьютер, телефон) с браузером, который запрашивает страницы с сервера и отображает их.</p>
+                    </div>
+                    <div class="card">
+                        <h3><i class="fas fa-exchange-alt"></i> HTTP/HTTPS</h3>
+                        <p>Протоколы передачи данных между сервером и клиентом. HTTPS — защищенная версия HTTP с шифрованием.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="inner-content" id="three-tech">
+                <h3>Три основные технологии веб-разработки</h3>
+                <div class="card-container">
+                    <div class="card">
+                        <h3><i class="fab fa-html5"></i> HTML</h3>
+                        <p><strong>Язык разметки</strong>, который определяет структуру содержимого веб-страницы. С помощью HTML вы создаете заголовки, абзацы, изображения, ссылки и другие элементы.</p>
+                        <div class="note">
+                            <p><strong>Пример:</strong> <code>&lt;h1&gt;Заголовок&lt;/h1&gt;</code> создает заголовок первого уровня.</p>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <h3><i class="fab fa-css3-alt"></i> CSS</h3>
+                        <p><strong>Язык стилей</strong>, который описывает внешний вид HTML-элементов. CSS позволяет задавать цвета, шрифты, расположение элементов и создавать адаптивный дизайн.</p>
+                        <div class="note">
+                            <p><strong>Пример:</strong> <code>h1 { color: blue; }</code> делает все заголовки синими.</p>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <h3><i class="fab fa-js-square"></i> JavaScript</h3>
+                        <p><strong>Язык программирования</strong>, который добавляет интерактивность на веб-страницы. С помощью JS можно создавать анимации, обрабатывать события пользователя и многое другое.</p>
+                        <div class="note">
+                            <p><strong>Пример:</strong> <code>document.getElementById("demo").innerHTML = "Привет!";</code> изменяет содержимое элемента.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="highlight">
+                    <p><strong>Совет:</strong> Начинайте с простых проектов и постепенно увеличивайте сложность. Не пытайтесь изучить все технологии сразу.</p>
+                </div>
+            </div>
+            
+            <div class="inner-content" id="how-browser">
+                <h3>Как браузер отображает сайты?</h3>
+                <p>Когда вы вводите адрес сайта в браузере, происходит следующее:</p>
+                
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div>
+                        <h4>Запрос к DNS-серверу</h4>
+                        <p>Браузер преобразует доменное имя (например, google.com) в IP-адрес сервера.</p>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div>
+                        <h4>Запрос к серверу</h4>
+                        <p>Браузер отправляет HTTP-запрос на сервер с этим IP-адресом.</p>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div>
+                        <h4>Ответ сервера</h4>
+                        <p>Сервер отправляет HTML, CSS, JavaScript файлы и другие ресурсы (изображения, шрифты).</p>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <div>
+                        <h4>Парсинг и рендеринг</h4>
+                        <p>Браузер анализирует HTML, строит DOM-дерево, применяет CSS стили и выполняет JavaScript код.</p>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">5</div>
+                    <div>
+                        <h4>Отображение страницы</h4>
+                        <p>Браузер отображает готовую страницу на экране.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Секция HTML Структура -->
+        <section id="html-structure" class="content-section">
+            <h2><i class="fas fa-file-code"></i> Структура HTML-документа</h2>
+            <p>HTML (HyperText Markup Language) — это язык разметки, который используется для создания веб-страниц. Каждый HTML-документ имеет определенную структуру, которую понимают браузеры.</p>
+            
+            <div class="inner-tabs">
+                <button class="inner-tab active" data-inner="basic-structure">Базовая структура</button>
+                <button class="inner-tab" data-inner="head-tag">Тег &lt;head&gt;</button>
+                <button class="inner-tab" data-inner="body-tag">Тег &lt;body&gt;</button>
+                <button class="inner-tab" data-inner="semantic">Семантические теги</button>
+            </div>
+            
+            <div class="inner-content active" id="basic-structure">
+                <h3>Минимальная структура HTML-документа</h3>
+                <div class="code-block">
+<span class="tag">&lt;!DOCTYPE html&gt;</span><br>
+<span class="tag">&lt;html <span class="attribute">lang</span>=<span class="value">"ru"</span>&gt;</span><br>
+<span class="tag">&lt;head&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;meta <span class="attribute">charset</span>=<span class="value">"UTF-8"</span>&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;meta <span class="attribute">name</span>=<span class="value">"viewport"</span> <span class="attribute">content</span>=<span class="value">"width=device-width, initial-scale=1.0"</span>&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;title&gt;</span>Название страницы<span class="tag">&lt;/title&gt;</span><br>
+<span class="tag">&lt;/head&gt;</span><br>
+<span class="tag">&lt;body&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">&lt;!-- Содержимое страницы --&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;h1&gt;</span>Привет, мир!<span class="tag">&lt;/h1&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;p&gt;</span>Это моя первая веб-страница.<span class="tag">&lt;/p&gt;</span><br>
+<span class="tag">&lt;/body&gt;</span><br>
+<span class="tag">&lt;/html&gt;</span>
+                </div>
+                
+                <h3>Объяснение ключевых элементов:</h3>
+                
+                <div class="html-element">
+                    <div class="element-icon">
+                        <i class="fas fa-file-medical"></i>
+                    </div>
+                    <div class="element-content">
+                        <h3>&lt;!DOCTYPE html&gt;</h3>
+                        <p><strong>Декларация типа документа</strong> - сообщает браузеру, что это документ HTML5. Это должна быть первая строка в любом HTML-документе.</p>
+                    </div>
+                </div>
+                
+                <div class="html-element">
+                    <div class="element-icon">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <div class="element-content">
+                        <h3>&lt;html&gt;&lt;/html&gt;</h3>
+                        <p><strong>Корневой элемент</strong> - оборачивает весь HTML-документ. Атрибут <code>lang</code> указывает язык страницы (например, "ru" для русского).</p>
+                    </div>
+                </div>
+                
+                <div class="html-element">
+                    <div class="element-icon">
+                        <i class="fas fa-heading"></i>
+                    </div>
+                    <div class="element-content">
+                        <h3>&lt;head&gt;&lt;/head&gt;</h3>
+                        <p><strong>Голова документа</strong> - содержит метаинформацию о странице (заголовок, кодировку, ссылки на стили и скрипты), которая не отображается напрямую на странице.</p>
+                    </div>
+                </div>
+                
+                <div class="html-element">
+                    <div class="element-icon">
+                        <i class="fas fa-body"></i>
+                    </div>
+                    <div class="element-content">
+                        <h3>&lt;body&gt;&lt;/body&gt;</h3>
+                        <p><strong>Тело документа</strong> - содержит все видимое содержимое веб-страницы: текст, изображения, ссылки, таблицы, списки и т.д.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="inner-content" id="head-tag">
+                <h3>Тег &lt;head&gt; - что внутри?</h3>
+                <p>Тег <code>&lt;head&gt;</code> содержит метаданные (данные о данных) HTML-документа. Эта информация не отображается на странице, но очень важна для браузеров и поисковых систем.</p>
+                
+                <div class="code-block">
+<span class="tag">&lt;head&gt;</span><br>
+&nbsp;&nbsp;<span class="comment">&lt;!-- Кодировка символов --&gt;</span><br>
+&nbsp;&nbsp;<span class="tag">&lt;meta <span class="attribute">charset</span>=<span class="value">"UTF-8"</span>&gt;</span><br><br>
+&nbsp;&nbsp;<span class="comment">&lt;!-- Настройки отображения на мобильных --&gt;</span><br>
+&nbsp;&nbsp;<span class="tag">&lt;meta <span class="attribute">name</span>=<span class="value">"viewport"</span> <span class="attribute">content</span>=<span class="value">"width=device-width, initial-scale=1.0"</span>&gt;</span><br><br>
+&nbsp;&nbsp;<span class="comment">&lt;!-- Заголовок страницы (отображается во вкладке) --&gt;</span><br>
+&nbsp;&nbsp;<span class="tag">&lt;title&gt;</span>Мой сайт - Главная страница<span class="tag">&lt;/title&gt;</span><br><br>
+&nbsp;&nbsp;<span class="comment">&lt;!-- Описание для поисковых систем --&gt;</span><br>
+&nbsp;&nbsp;<span class="tag">&lt;meta <span class="attribute">name</span>=<span class="value">"description"</span> <span class="attribute">content</span>=<span class="value">"Это мой первый сайт на HTML и CSS"</span>&gt;</span><br><br>
+&nbsp;&nbsp;<span class="comment">&lt;!-- Подключение CSS файла --&gt;</span><br>
+&nbsp;&nbsp;<span class="tag">&lt;link <span class="attribute">rel</span>=<span class="value">"stylesheet"</span> <span class="attribute">href</span>=<span class="value">"style.css"</span>&gt;</span><br>
+<span class="tag">&lt;/head&gt;</span>
+                </div>
+                
+                <h4>Важные элементы внутри &lt;head&gt;:</h4>
+                <ul class="resource-list">
+                    <li><strong>&lt;meta charset="UTF-8"&gt;</strong> - определяет кодировку символов (поддержка кириллицы)</li>
+                    <li><strong>&lt;meta name="viewport"&gt;</strong> - делает сайт адаптивным для мобильных устройств</li>
+                    <li><strong>&lt;title&gt;&lt;/title&gt;</strong> - заголовок страницы (отображается во вкладке браузера)</li>
+                    <li><strong>&lt;meta name="description"&gt;</strong> - описание страницы для поисковых систем</li>
+                    <li><strong>&lt;link rel="stylesheet"&gt;</strong> - подключение CSS файлов</li>
+                    <li><strong>&lt;script&gt;&lt;/script&gt;</strong> - подключение JavaScript файлов</li>
+                </ul>
+            </div>
+            
+            <div class="inner-content" id="body-tag">
+                <h3>Тег &lt;body&gt; - видимое содержимое</h3>
+                <p>Тег <code>&lt;body&gt;</code> содержит всё содержимое, которое отображается в окне браузера. Здесь размещаются все видимые элементы: текст, изображения, ссылки, формы и т.д.</p>
+                
+                <h4>Популярные теги внутри body:</h4>
+                <div class="tools-list">
+                    <div class="tool">&lt;h1&gt;-&lt;h6&gt;</div>
+                    <div class="tool">&lt;p&gt;</div>
+                    <div class="tool">&lt;a&gt;</div>
+                    <div class="tool">&lt;img&gt;</div>
+                    <div class="tool">&lt;div&gt;</div>
+                    <div class="tool">&lt;span&gt;</div>
+                    <div class="tool">&lt;ul&gt;, &lt;ol&gt;, &lt;li&gt;</div>
+                    <div class="tool">&lt;table&gt;</div>
+                    <div class="tool">&lt;form&gt;</div>
+                    <div class="tool">&lt;button&gt;</div>
+                </div>
+                
+                <h4>Пример содержимого body:</h4>
+                <div class="code-block">
+<span class="tag">&lt;body&gt;</span><br>
+&nbsp;&nbsp;<span class="tag">&lt;header&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;h1&gt;</span>Мой первый сайт<span class="tag">&lt;/h1&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;nav&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;a <span class="attribute">href</span>=<span class="value">"index.html"</span>&gt;</span>Главная<span class="tag">&lt;/a&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;/nav&gt;</span><br>
+&nbsp;&nbsp;<span class="tag">&lt;/header&gt;</span><br><br>
+&nbsp;&nbsp;<span class="tag">&lt;main&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;h2&gt;</span>Добро пожаловать!<span class="tag">&lt;/h2&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;p&gt;</span>Это мой первый сайт.<span class="tag">&lt;/p&gt;</span><br>
+&nbsp;&nbsp;<span class="tag">&lt;/main&gt;</span><br><br>
+&nbsp;&nbsp;<span class="tag">&lt;footer&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;p&gt;</span>&copy; 2023 Мой сайт<span class="tag">&lt;/p&gt;</span><br>
+&nbsp;&nbsp;<span class="tag">&lt;/footer&gt;</span><br>
+<span class="tag">&lt;/body&gt;</span>
+                </div>
+            </div>
+            
+            <div class="inner-content" id="semantic">
+                <h3>Семантические теги HTML5</h3>
+                <p>Семантические теги описывают смысл содержимого, а не только его внешний вид. Они улучшают доступность для скринридеров и SEO.</p>
+                
+                <div class="visual-guide">
+                    <div class="screenshot">
+                        <div style="background: #f0f0f0; height: 300px; display: flex; flex-direction: column;">
+                            <div style="background: #3498db; color: white; padding: 20px; text-align: center;">&lt;header&gt; Шапка сайта</div>
+                            <div style="background: #2c3e50; color: white; padding: 15px; text-align: center;">&lt;nav&gt; Навигация</div>
+                            <div style="flex: 1; padding: 20px; display: flex;">
+                                <div style="flex: 3; padding: 15px; background: #ecf0f1;">
+                                    <div style="background: white; padding: 15px; margin-bottom: 10px;">&lt;main&gt; Основное содержимое</div>
+                                    <div style="background: white; padding: 15px;">&lt;article&gt; Статья</div>
+                                </div>
+                                <div style="flex: 1; padding: 15px; background: #bdc3c7;">&lt;aside&gt; Боковая панель</div>
+                            </div>
+                            <div style="background: #34495e; color: white; padding: 20px; text-align: center;">&lt;footer&gt; Подвал сайта</div>
+                        </div>
+                        <div class="screenshot-caption">Визуальное представление семантических тегов</div>
+                    </div>
+                </div>
+                
+                <div class="card-container">
+                    <div class="card">
+                        <h3><i class="fas fa-heading"></i> &lt;header&gt;</h3>
+                        <p>Вводная часть раздела или страницы. Обычно содержит логотип, навигацию, заголовок.</p>
+                    </div>
+                    <div class="card">
+                        <h3><i class="fas fa-shoe-prints"></i> &lt;footer&gt;</h3>
+                        <p>Нижняя часть раздела или страницы. Часто содержит информацию об авторских правах, контакты.</p>
+                    </div>
+                    <div class="card">
+                        <h3><i class="fas fa-bars"></i> &lt;nav&gt;</h3>
+                        <p>Навигационные ссылки по сайту. Основное меню обычно помещается в этот тег.</p>
+                    </div>
+                    <div class="card">
+                        <h3><i class="fas fa-newspaper"></i> &lt;article&gt;</h3>
+                        <p>Независимый, самодостаточный контент: статья в блоге, новость, пост на форуме.</p>
+                    </div>
+                    <div class="card">
+                        <h3><i class="fas fa-th-large"></i> &lt;section&gt;</h3>
+                        <p>Тематическая группировка контента. Обычно имеет собственный заголовок.</p>
+                    </div>
+                    <div class="card">
+                        <h3><i class="fas fa-columns"></i> &lt;aside&gt;</h3>
+                        <p>Боковая панель, связанная с основным содержимым, но не являющаяся его частью.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Секция HTML & CSS -->
+        <section id="html-css" class="content-section">
+            <h2><i class="fab fa-html5"></i> HTML и CSS на практике</h2>
+            <p>HTML создает структуру страницы, а CSS отвечает за её внешний вид. Вместе они формируют основу любого веб-сайта.</p>
+            
+            <div class="inner-tabs">
+                <button class="inner-tab active" data-inner="html-examples">Примеры HTML</button>
+                <button class="inner-tab" data-inner="css-basics">Основы CSS</button>
+                <button class="inner-tab" data-inner="layout">Макеты и верстка</button>
+                <button class="inner-tab" data-inner="resources">Ресурсы</button>
+            </div>
+            
+            <div class="inner-content active" id="html-examples">
+                <h3>Практические примеры HTML</h3>
+                
+                <h4>Создание формы обратной связи:</h4>
+                <div class="code-block">
+<span class="tag">&lt;form <span class="attribute">action</span>=<span class="value">"/submit"</span> <span class="attribute">method</span>=<span class="value">"POST"</span>&gt;</span><br>
+&nbsp;&nbsp;<span class="tag">&lt;label <span class="attribute">for</span>=<span class="value">"name"</span>&gt;</span>Имя:<span class="tag">&lt;/label&gt;</span><br>
+&nbsp;&nbsp;<span class="tag">&lt;input <span class="attribute">type</span>=<span class="value">"text"</span> <span class="attribute">id</span>=<span class="value">"name"</span> <span class="attribute">name</span>=<span class="value">"name"</span> <span class="attribute">required</span>&gt;</span><br><br>
+&nbsp;&nbsp;<span class="tag">&lt;label <span class="attribute">for</span>=<span class="value">"email"</span>&gt;</span>Email:<span class="tag">&lt;/label&gt;</span><br>
+&nbsp;&nbsp;<span class="tag">&lt;input <span class="attribute">type</span>=<span class="value">"email"</span> <span class="attribute">id</span>=<span class="value">"email"</span> <span class="attribute">name</span>=<span class="value">"email"</span> <span class="attribute">required</span>&gt;</span><br><br>
+&nbsp;&nbsp;<span class="tag">&lt;label <span class="attribute">for</span>=<span class="value">"message"</span>&gt;</span>Сообщение:<span class="tag">&lt;/label&gt;</span><br>
+&nbsp;&nbsp;<span class="tag">&lt;textarea <span class="attribute">id</span>=<span class="value">"message"</span> <span class="attribute">name</span>=<span class="value">"message"</span> <span class="attribute">rows</span>=<span class="value">"4"</span>&gt;</span><span class="tag">&lt;/textarea&gt;</span><br><br>
+&nbsp;&nbsp;<span class="tag">&lt;button <span class="attribute">type</span>=<span class="value">"submit"</span>&gt;</span>Отправить<span class="tag">&lt;/button&gt;</span><br>
+<span class="tag">&lt;/form&gt;</span>
+                </div>
+                
+                <h4>Создание таблицы:</h4>
+                <div class="code-block">
+<span class="tag">&lt;table&gt;</span><br>
+&nbsp;&nbsp;<span class="tag">&lt;thead&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;tr&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;th&gt;</span>Имя<span class="tag">&lt;/th&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;th&gt;</span>Возраст<span class="tag">&lt;/th&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;th&gt;</span>Город<span class="tag">&lt;/th&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;/tr&gt;</span><br>
+&nbsp;&nbsp;<span class="tag">&lt;/thead&gt;</span><br>
+&nbsp;&nbsp;<span class="tag">&lt;tbody&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;tr&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;td&gt;</span>Анна<span class="tag">&lt;/td&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;td&gt;</span>25<span class="tag">&lt;/td&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;td&gt;</span>Москва<span class="tag">&lt;/td&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;/tr&gt;</span><br>
+&nbsp;&nbsp;<span class="tag">&lt;/tbody&gt;</span><br>
+<span class="tag">&lt;/table&gt;</span>
+                </div>
+                
+                <h4>Создание навигационного меню:</h4>
+                <div class="code-block">
+<span class="tag">&lt;nav&gt;</span><br>
+&nbsp;&nbsp;<span class="tag">&lt;ul&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;li&gt;</span><span class="tag">&lt;a <span class="attribute">href</span>=<span class="value">"index.html"</span>&gt;</span>Главная<span class="tag">&lt;/a&gt;</span><span class="tag">&lt;/li&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;li&gt;</span><span class="tag">&lt;a <span class="attribute">href</span>=<span class="value">"about.html"</span>&gt;</span>О нас<span class="tag">&lt;/a&gt;</span><span class="tag">&lt;/li&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;li&gt;</span><span class="tag">&lt;a <span class="attribute">href</span>=<span class="value">"services.html"</span>&gt;</span>Услуги<span class="tag">&lt;/a&gt;</span><span class="tag">&lt;/li&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;li&gt;</span><span class="tag">&lt;a <span class="attribute">href</span>=<span class="value">"contact.html"</span>&gt;</span>Контакты<span class="tag">&lt;/a&gt;</span><span class="tag">&lt;/li&gt;</span><br>
+&nbsp;&nbsp;<span class="tag">&lt;/ul&gt;</span><br>
+<span class="tag">&lt;/nav&gt;</span>
+                </div>
+            </div>
+            
+            <div class="inner-content" id="css-basics">
+                <h3>Основы CSS (Cascading Style Sheets)</h3>
+                <p>CSS используется для стилизации HTML-элементов. Стили можно задавать тремя способами:</p>
+                
+                <div class="card-container">
+                    <div class="card">
+                        <h3><i class="fas fa-external-link-alt"></i> Внешний CSS</h3>
+                        <p>Стили в отдельном файле с расширением .css, который подключается в HTML:</p>
+                        <div class="code-block" style="font-size: 0.9rem;">
+<span class="tag">&lt;link <span class="attribute">rel</span>=<span class="value">"stylesheet"</span> <span class="attribute">href</span>=<span class="value">"style.css"</span>&gt;</span>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <h3><i class="fas fa-code"></i> Внутренний CSS</h3>
+                        <p>Стили внутри тега &lt;style&gt; в секции &lt;head&gt;:</p>
+                        <div class="code-block" style="font-size: 0.9rem;">
+<span class="tag">&lt;style&gt;</span><br>
+&nbsp;&nbsp;body {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;font-family: Arial, sans-serif;<br>
+&nbsp;&nbsp;}<br>
+<span class="tag">&lt;/style&gt;</span>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <h3><i class="fas fa-tag"></i> Inline CSS</h3>
+                        <p>Стили непосредственно в атрибуте style HTML-элемента:</p>
+                        <div class="code-block" style="font-size: 0.9rem;">
+<span class="tag">&lt;h1 <span class="attribute">style</span>=<span class="value">"color: blue;"</span>&gt;</span>Заголовок<span class="tag">&lt;/h1&gt;</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <h4>Пример CSS правил:</h4>
+                <div class="code-block">
+<span class="comment">/* Селектор элемента */</span><br>
+<span class="tag">h1</span> {<br>
+&nbsp;&nbsp;<span class="attribute">color</span>: <span class="value">#2c3e50</span>;<br>
+&nbsp;&nbsp;<span class="attribute">font-size</span>: <span class="value">2.5rem</span>;<br>
+&nbsp;&nbsp;<span class="attribute">text-align</span>: <span class="value">center</span>;<br>
+}<br><br>
+<span class="comment">/* Селектор класса */</span><br>
+<span class="tag">.card</span> {<br>
+&nbsp;&nbsp;<span class="attribute">background</span>: <span class="value">white</span>;<br>
+&nbsp;&nbsp;<span class="attribute">border-radius</span>: <span class="value">8px</span>;<br>
+&nbsp;&nbsp;<span class="attribute">padding</span>: <span class="value">20px</span>;<br>
+&nbsp;&nbsp;<span class="attribute">box-shadow</span>: <span class="value">0 4px 10px rgba(0,0,0,0.1)</span>;<br>
+}<br><br>
+<span class="comment">/* Селектор ID */</span><br>
+<span class="tag">#header</span> {<br>
+&nbsp;&nbsp;<span class="attribute">background</span>: <span class="value">linear-gradient(to right, #3498db, #2c3e50)</span>;<br>
+&nbsp;&nbsp;<span class="attribute">color</span>: <span class="value">white</span>;<br>
+&nbsp;&nbsp;<span class="attribute">padding</span>: <span class="value">40px 0</span>;<br>
+}<br><br>
+<span class="comment">/* Медиазапрос для адаптивности */</span><br>
+<span class="tag">@media (max-width: 768px)</span> {<br>
+&nbsp;&nbsp;<span class="tag">h1</span> {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="attribute">font-size</span>: <span class="value">1.8rem</span>;<br>
+&nbsp;&nbsp;}<br>
+}
+                </div>
+            </div>
+            
+            <div class="inner-content" id="layout">
+                <h3>Макеты и верстка в CSS</h3>
+                <p>Современная верстка использует Flexbox и Grid для создания адаптивных макетов.</p>
+                
+                <h4>Flexbox пример:</h4>
+                <div class="code-block">
+<span class="comment">/* CSS */</span><br>
+<span class="tag">.container</span> {<br>
+&nbsp;&nbsp;<span class="attribute">display</span>: <span class="value">flex</span>;<br>
+&nbsp;&nbsp;<span class="attribute">justify-content</span>: <span class="value">space-between</span>;<br>
+&nbsp;&nbsp;<span class="attribute">align-items</span>: <span class="value">center</span>;<br>
+&nbsp;&nbsp;<span class="attribute">flex-wrap</span>: <span class="value">wrap</span>;<br>
+}<br><br>
+<span class="tag">.item</span> {<br>
+&nbsp;&nbsp;<span class="attribute">flex</span>: <span class="value">1 1 300px</span>; <span class="comment">/* flex-grow, flex-shrink, flex-basis */</span><br>
+&nbsp;&nbsp;<span class="attribute">margin</span>: <span class="value">10px</span>;<br>
+}
+                </div>
+                
+                <h4>CSS Grid пример:</h4>
+                <div class="code-block">
+<span class="comment">/* CSS */</span><br>
+<span class="tag">.grid-container</span> {<br>
+&nbsp;&nbsp;<span class="attribute">display</span>: <span class="value">grid</span>;<br>
+&nbsp;&nbsp;<span class="attribute">grid-template-columns</span>: <span class="value">repeat(auto-fill, minmax(250px, 1fr))</span>;<br>
+&nbsp;&nbsp;<span class="attribute">gap</span>: <span class="value">20px</span>;<br>
+}
+                </div>
+                
+                <div class="note">
+                    <p><strong>Совет:</strong> Используйте Flexbox для одномерных макетов (ряд или колонка), а Grid для двумерных макетов (и строки, и колонки).</p>
+                </div>
+            </div>
+            
+            <div class="inner-content" id="resources">
+                <h3>Полезные ресурсы для изучения HTML и CSS</h3>
+                <ul class="resource-list">
+                    <li><strong>MDN Web Docs</strong> - полная документация по HTML и CSS с примерами</li>
+                    <li><strong>Codecademy</strong> - интерактивные курсы для начинающих</li>
+                    <li><strong>FreeCodeCamp</strong> - бесплатные практические задания и проекты</li>
+                    <li><strong>CSS-Tricks</strong> - полезные советы, приемы и руководства по CSS</li>
+                    <li><strong>W3Schools</strong> - простые примеры и интерактивные редакторы</li>
+                    <li><strong>Codepen</strong> - онлайн-редактор для экспериментов с HTML/CSS/JS</li>
+                </ul>
+                
+                <h4>Популярные CSS фреймворки:</h4>
+                <div class="tools-list">
+                    <div class="tool">Bootstrap</div>
+                    <div class="tool">Tailwind CSS</div>
+                    <div class="tool">Bulma</div>
+                    <div class="tool">Foundation</div>
+                    <div class="tool">Materialize</div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Секция JavaScript -->
+        <section id="javascript" class="content-section">
+            <h2><i class="fab fa-js-square"></i> JavaScript для веб-сайтов</h2>
+            <p>JavaScript добавляет интерактивность на ваши веб-страницы. С его помощью можно создавать динамические элементы, обрабатывать данные и реагировать на действия пользователя.</p>
+            
+            <div class="inner-tabs">
+                <button class="inner-tab active" data-inner="js-basics">Основы JS</button>
+                <button class="inner-tab" data-inner="js-dom">Работа с DOM</button>
+                <button class="inner-tab" data-inner="js-frameworks">Фреймворки</button>
+                <button class="inner-tab" data-inner="js-examples">Примеры</button>
+            </div>
+            
+            <div class="inner-content active" id="js-basics">
+                <h3>Основы JavaScript</h3>
+                <p>JavaScript — это язык программирования, который выполняется в браузере пользователя. Он позволяет делать сайты интерактивными.</p>
+                
+                <h4>Пример простого JavaScript кода:</h4>
+                <div class="code-block">
+<span class="comment">// Переменные</span><br>
+<span class="tag">let</span> name = <span class="value">"Иван"</span>;<br>
+<span class="tag">const</span> age = <span class="value">25</span>;<br>
+<span class="tag">var</span> city = <span class="value">"Москва"</span>; <span class="comment">// устаревший способ</span><br><br>
+<span class="comment">// Функция</span><br>
+<span class="tag">function</span> greet() {<br>
+&nbsp;&nbsp;<span class="attribute">alert</span>(<span class="value">"Привет, " + name + "!"</span>);<br>
+}<br><br>
+<span class="comment">// Условия</span><br>
+<span class="tag">if</span> (age >= <span class="value">18</span>) {<br>
+&nbsp;&nbsp;<span class="attribute">console</span>.<span class="value">log</span>(<span class="value">"Совершеннолетний"</span>);<br>
+} <span class="tag">else</span> {<br>
+&nbsp;&nbsp;<span class="attribute">console</span>.<span class="value">log</span>(<span class="value">"Несовершеннолетний"</span>);<br>
+}<br><br>
+<span class="comment">// Цикл</span><br>
+<span class="tag">for</span> (<span class="tag">let</span> i = <span class="value">0</span>; i < <span class="value">5</span>; i++) {<br>
+&nbsp;&nbsp;<span class="attribute">console</span>.<span class="value">log</span>(<span class="value">"Итерация: " + i</span>);<br>
+}
+                </div>
+                
+                <h4>Типы данных в JavaScript:</h4>
+                <div class="tools-list">
+                    <div class="tool">String (строка)</div>
+                    <div class="tool">Number (число)</div>
+                    <div class="tool">Boolean (логический)</div>
+                    <div class="tool">Array (массив)</div>
+                    <div class="tool">Object (объект)</div>
+                    <div class="tool">Null</div>
+                    <div class="tool">Undefined</div>
+                </div>
+            </div>
+            
+            <div class="inner-content" id="js-dom">
+                <h3>Работа с DOM (Document Object Model)</h3>
+                <p>DOM — это представление HTML-документа в виде дерева объектов. JavaScript может изменять DOM, чтобы динамически обновлять содержимое страницы.</p>
+                
+                <h4>Основные методы работы с DOM:</h4>
+                <div class="code-block">
+<span class="comment">// Получение элементов</span><br>
+<span class="tag">const</span> elementById = <span class="attribute">document</span>.<span class="value">getElementById</span>(<span class="value">'myId'</span>);<br>
+<span class="tag">const</span> elementsByClass = <span class="attribute">document</span>.<span class="value">getElementsByClassName</span>(<span class="value">'myClass'</span>);<br>
+<span class="tag">const</span> elementsByTag = <span class="attribute">document</span>.<span class="value">getElementsByTagName</span>(<span class="value">'div'</span>);<br>
+<span class="tag">const</span> elementQuery = <span class="attribute">document</span>.<span class="value">querySelector</span>(<span class="value">'.myClass'</span>);<br>
+<span class="tag">const</span> elementsQueryAll = <span class="attribute">document</span>.<span class="value">querySelectorAll</span>(<span class="value">'div.myClass'</span>);<br><br>
+<span class="comment">// Изменение содержимого</span><br>
+elementById.<span class="attribute">innerHTML</span> = <span class="value">'Новый текст'</span>;<br>
+elementById.<span class="attribute">textContent</span> = <span class="value">'Текст без HTML'</span>;<br><br>
+<span class="comment">// Изменение стилей</span><br>
+elementById.<span class="attribute">style</span>.<span class="value">color</span> = <span class="value">'red'</span>;<br>
+elementById.<span class="attribute">classList</span>.<span class="value">add</span>(<span class="value">'new-class'</span>);<br>
+elementById.<span class="attribute">classList</span>.<span class="value">remove</span>(<span class="value">'old-class'</span>);<br><br>
+<span class="comment">// Создание новых элементов</span><br>
+<span class="tag">const</span> newElement = <span class="attribute">document</span>.<span class="value">createElement</span>(<span class="value">'div'</span>);<br>
+newElement.<span class="attribute">textContent</span> = <span class="value">'Я новый элемент'</span>;<br>
+<span class="attribute">document</span>.<span class="value">body</span>.<span class="attribute">appendChild</span>(newElement);
+                </div>
+                
+                <h4>Обработка событий:</h4>
+                <div class="code-block">
+<span class="comment">// Способ 1: через атрибут</span><br>
+<span class="tag">&lt;button <span class="attribute">onclick</span>=<span class="value">"handleClick()"</span>&gt;</span>Нажми меня<span class="tag">&lt;/button&gt;</span><br><br>
+<span class="comment">// Способ 2: через свойство</span><br>
+buttonElement.<span class="attribute">onclick</span> = <span class="tag">function</span>() {<br>
+&nbsp;&nbsp;<span class="attribute">alert</span>(<span class="value">'Кнопка нажата!'</span>);<br>
+};<br><br>
+<span class="comment">// Способ 3: через addEventListener (рекомендуется)</span><br>
+buttonElement.<span class="attribute">addEventListener</span>(<span class="value">'click'</span>, <span class="tag">function</span>() {<br>
+&nbsp;&nbsp;<span class="attribute">console</span>.<span class="value">log</span>(<span class="value">'Кнопка нажата!'</span>);<br>
+});
+                </div>
+            </div>
+            
+            <div class="inner-content" id="js-frameworks">
+                <h3>Популярные библиотеки и фреймворки JavaScript</h3>
+                <p>Для упрощения разработки сложных веб-приложений были созданы библиотеки и фреймворки.</p>
+                
+                <div class="card-container">
+                    <div class="card">
+                        <h3><i class="fab fa-react"></i> React</h3>
+                        <p>Библиотека для создания пользовательских интерфейсов от Facebook. Использует компонентный подход и виртуальный DOM.</p>
+                        <div class="note" style="padding: 10px; margin-top: 10px;">
+                            <p><strong>Лучше для:</strong> SPA, динамические интерфейсы, большие приложения</p>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <h3><i class="fab fa-vuejs"></i> Vue.js</h3>
+                        <p>Прогрессивный фреймворк для создания пользовательских интерфейсов. Легок в изучении и интеграции.</p>
+                        <div class="note" style="padding: 10px; margin-top: 10px;">
+                            <p><strong>Лучше для:</strong> начинающих, постепенной интеграции</p>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <h3><i class="fab fa-angular"></i> Angular</h3>
+                        <p>Полноценный фреймворк от Google для создания сложных веб-приложений. Использует TypeScript.</p>
+                        <div class="note" style="padding: 10px; margin-top: 10px;">
+                            <p><strong>Лучше для:</strong> корпоративных приложений, больших команд</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <h4>Другие популярные инструменты:</h4>
+                <div class="tools-list">
+                    <div class="tool">jQuery</div>
+                    <div class="tool">Node.js</div>
+                    <div class="tool">Express.js</div>
+                    <div class="tool">Next.js</div>
+                    <div class="tool">Svelte</div>
+                    <div class="tool">Three.js</div>
+                </div>
+            </div>
+            
+            <div class="inner-content" id="js-examples">
+                <h3>Что можно делать с помощью JavaScript?</h3>
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div>
+                        <h4>Создавать анимации и эффекты переходов</h4>
+                        <p>Плавное появление элементов, слайдеры, параллакс-эффекты.</p>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div>
+                        <h4>Валидировать формы перед отправкой</h4>
+                        <p>Проверка email, паролей, обязательных полей без перезагрузки страницы.</p>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div>
+                        <h4>Загружать данные с сервера (AJAX/Fetch)</h4>
+                        <p>Получение данных без перезагрузки страницы, бесконечная прокрутка.</p>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <div>
+                        <h4>Создавать интерактивные элементы</h4>
+                        <p>Модальные окна, аккордеоны, вкладки, выпадающие меню.</p>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">5</div>
+                    <div>
+                        <h4>Разрабатывать веб-приложения и игры</h4>
+                        <p>Онлайн-редакторы, инструменты, браузерные игры.</p>
+                    </div>
+                </div>
+                
+                <h4>Пример создания вкладок (как на этом сайте):</h4>
+                <div class="code-block">
+<span class="comment">// HTML</span><br>
+<span class="tag">&lt;div <span class="attribute">class</span>=<span class="value">"tabs"</span>&gt;</span><br>
+&nbsp;&nbsp;<span class="tag">&lt;button <span class="attribute">class</span>=<span class="value">"tab active"</span> <span class="attribute">data-tab</span>=<span class="value">"tab1"</span>&gt;</span>Вкладка 1<span class="tag">&lt;/button&gt;</span><br>
+&nbsp;&nbsp;<span class="tag">&lt;button <span class="attribute">class</span>=<span class="value">"tab"</span> <span class="attribute">data-tab</span>=<span class="value">"tab2"</span>&gt;</span>Вкладка 2<span class="tag">&lt;/button&gt;</span><br>
+<span class="tag">&lt;/div&gt;</span><br><br>
+<span class="tag">&lt;div <span class="attribute">class</span>=<span class="value">"tab-content active"</span> <span class="attribute">id</span>=<span class="value">"tab1"</span>&gt;</span>Содержимое 1<span class="tag">&lt;/div&gt;</span><br>
+<span class="tag">&lt;div <span class="attribute">class</span>=<span class="value">"tab-content"</span> <span class="attribute">id</span>=<span class="value">"tab2"</span>&gt;</span>Содержимое 2<span class="tag">&lt;/div&gt;</span><br><br>
+<span class="comment">// JavaScript</span><br>
+<span class="attribute">document</span>.<span class="value">addEventListener</span>(<span class="value">'DOMContentLoaded'</span>, <span class="tag">function</span>() {<br>
+&nbsp;&nbsp;<span class="tag">const</span> tabs = <span class="attribute">document</span>.<span class="value">querySelectorAll</span>(<span class="value">'.tab'</span>);<br>
+&nbsp;&nbsp;<span class="tag">const</span> contents = <span class="attribute">document</span>.<span class="value">querySelectorAll</span>(<span class="value">'.tab-content'</span>);<br><br>
+&nbsp;&nbsp;tabs.<span class="attribute">forEach</span>(tab => {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;tab.<span class="attribute">addEventListener</span>(<span class="value">'click'</span>, () => {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">// Убираем активный класс у всех</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tabs.<span class="attribute">forEach</span>(t => t.<span class="attribute">classList</span>.<span class="value">remove</span>(<span class="value">'active'</span>));<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;contents.<span class="attribute">forEach</span>(c => c.<span class="attribute">classList</span>.<span class="value">remove</span>(<span class="value">'active'</span>));<br><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">// Добавляем активный класс текущей вкладке</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tab.<span class="attribute">classList</span>.<span class="value">add</span>(<span class="value">'active'</span>);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">const</span> tabId = tab.<span class="attribute">getAttribute</span>(<span class="value">'data-tab'</span>);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="attribute">document</span>.<span class="value">getElementById</span>(tabId).<span class="attribute">classList</span>.<span class="value">add</span>(<span class="value">'active'</span>);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;});<br>
+&nbsp;&nbsp;});<br>
+});
+                </div>
+            </div>
+        </section>
+        
+        <!-- Секция Дизайн -->
+        <section id="design" class="content-section">
+            <h2><i class="fas fa-paint-brush"></i> Дизайн веб-сайтов</h2>
+            <p>Хороший дизайн делает сайт не только красивым, но и удобным для пользователя. В этом разделе рассмотрим основные принципы веб-дизайна.</p>
+            
+            <div class="inner-tabs">
+                <button class="inner-tab active" data-inner="design-principles">Принципы дизайна</button>
+                <button class="inner-tab" data-inner="colors">Цвета</button>
+                <button class="inner-tab" data-inner="typography">Типографика</button>
+                <button class="inner-tab" data-inner="design-tools">Инструменты</button>
+            </div>
+            
+            <div class="inner-content active" id="design-principles">
+                <h3>Принципы хорошего веб-дизайна</h3>
+                <div class="card-container">
+                    <div class="card">
+                        <h3><span class="step-number">1</span> Простота</h3>
+                        <p>Минималистичный дизайн помогает пользователям сфокусироваться на важном контенте. Избегайте лишних элементов и визуального шума.</p>
+                        <div class="note" style="padding: 10px; margin-top: 10px;">
+                            <p><strong>Правило:</strong> Если элемент не выполняет функцию, уберите его.</p>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <h3><span class="step-number">2</span> Навигация</h3>
+                        <p>Меню должно быть интуитивно понятным и доступным с любой страницы. Пользователь всегда должен понимать, где он находится.</p>
+                        <div class="note" style="padding: 10px; margin-top: 10px;">
+                            <p><strong>Правило "трех кликов":</strong> Любая информация должна быть доступна за 3 клика.</p>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <h3><span class="step-number">3</span> Адаптивность</h3>
+                        <p>Сайт должен хорошо выглядеть на всех устройствах: компьютерах, планшетах и смартфонах. Используйте медиазапросы CSS.</p>
+                        <div class="note" style="padding: 10px; margin-top: 10px;">
+                            <p><strong>Подход:</strong> Mobile First - сначала дизайн для мобильных, потом для десктопов.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card-container">
+                    <div class="card">
+                        <h3><span class="step-number">4</span> Скорость загрузки</h3>
+                        <p>Пользователи уходят с сайтов, которые загружаются дольше 3 секунд. Оптимизируйте изображения и код.</p>
+                        <div class="tools-list" style="margin-top: 10px;">
+                            <div class="tool" style="font-size: 0.8rem; padding: 8px 12px;">Сжатие изображений</div>
+                            <div class="tool" style="font-size: 0.8rem; padding: 8px 12px;">Минификация кода</div>
+                            <div class="tool" style="font-size: 0.8rem; padding: 8px 12px;">Кэширование</div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <h3><span class="step-number">5</span> Доступность</h3>
+                        <p>Сайт должен быть доступен людям с ограниченными возможностями. Используйте семантические теги, alt для изображений, достаточный контраст.</p>
+                        <div class="note" style="padding: 10px; margin-top: 10px;">
+                            <p><strong>Стандарт:</strong> WCAG (Web Content Accessibility Guidelines)</p>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <h3><span class="step-number">6</span> Консистентность</h3>
+                        <p>Единый стиль на всех страницах: одинаковые цвета, шрифты, кнопки, отступы. Это создает профессиональное впечатление.</p>
+                        <div class="note" style="padding: 10px; margin-top: 10px;">
+                            <p><strong>Используйте:</strong> CSS-переменные для единообразия.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="inner-content" id="colors">
+                <h3>Цветовая палитра</h3>
+                <p>Правильный выбор цветов влияет на восприятие сайта. Используйте контрастные цвета для текста и фона. Ограничьте палитру 3-4 основными цветами.</p>
+                
+                <h4>Популярные цветовые схемы:</h4>
+                <div class="visual-guide">
+                    <div class="screenshot">
+                        <div style="background: #f0f0f0; height: 150px; display: flex;">
+                            <div style="flex: 1; background: #3498db;"></div>
+                            <div style="flex: 1; background: #2ecc71;"></div>
+                            <div style="flex: 1; background: #e74c3c;"></div>
+                            <div style="flex: 1; background: #f39c12;"></div>
+                            <div style="flex: 1; background: #9b59b6;"></div>
+                        </div>
+                        <div class="screenshot-caption">Яркая цветовая схема</div>
+                    </div>
+                    
+                    <div class="screenshot">
+                        <div style="background: #f0f0f0; height: 150px; display: flex;">
+                            <div style="flex: 1; background: #2c3e50;"></div>
+                            <div style="flex: 1; background: #34495e;"></div>
+                            <div style="flex: 1; background: #7f8c8d;"></div>
+                            <div style="flex: 1; background: #bdc3c7;"></div>
+                            <div style="flex: 1; background: #ecf0f1;"></div>
+                        </div>
+                        <div class="screenshot-caption">Монохромная схема</div>
+                    </div>
+                </div>
+                
+                <h4>Полезные инструменты для работы с цветами:</h4>
+                <div class="tools-list">
+                    <div class="tool">Coolors.co</div>
+                    <div class="tool">Adobe Color</div>
+                    <div class="tool">Color Hunt</div>
+                    <div class="tool">Paletton</div>
+                    <div class="tool">ColorZilla</div>
+                </div>
+                
+                <div class="highlight">
+                    <p><strong>Совет:</strong> Используйте 60-30-10 правило: 60% основного цвета, 30% дополнительного, 10% акцентного.</p>
+                </div>
+            </div>
+            
+            <div class="inner-content" id="typography">
+                <h3>Типографика</h3>
+                <p>Типографика — это искусство оформления текста. Правильная типографика улучшает читаемость и восприятие контента.</p>
+                
+                <h4>Основные правила типографики:</h4>
+                <ul class="resource-list">
+                    <li><strong>Используйте не более 2-3 шрифтов на сайте</strong> - один для заголовков, один для основного текста, третий (опционально) для акцентов.</li>
+                    <li><strong>Обеспечьте хорошую читаемость текста</strong> - достаточный контраст между текстом и фоном.</li>
+                    <li><strong>Используйте размер шрифта не менее 16px для основного текста</strong> - для комфортного чтения на всех устройствах.</li>
+                    <li><strong>Применяйте иерархию заголовков</strong> - h1, h2, h3, h4 должны отличаться по размеру и весу.</li>
+                    <li><strong>Используйте межстрочный интервал 1.5-1.6</strong> - для лучшей читаемости длинных текстов.</li>
+                    <li><strong>Ограничьте длину строки 50-75 символов</strong> - чтобы глаза не уставали при чтении.</li>
+                </ul>
+                
+                <h4>Популярные веб-шрифты:</h4>
+                <div class="tools-list">
+                    <div class="tool">Roboto</div>
+                    <div class="tool">Open Sans</div>
+                    <div class="tool">Montserrat</div>
+                    <div class="tool">Lato</div>
+                    <div class="tool">Playfair Display</div>
+                    <div class="tool">Source Sans Pro</div>
+                </div>
+                
+                <h4>Ресурсы для шрифтов:</h4>
+                <div class="card-container">
+                    <div class="card">
+                        <h3><i class="fab fa-google"></i> Google Fonts</h3>
+                        <p>Бесплатные шрифты с простым подключением через CDN. Более 1000 семейств шрифтов.</p>
+                    </div>
+                    <div class="card">
+                        <h3><i class="fas fa-font"></i> Font Awesome</h3>
+                        <p>Иконки-шрифты для веб-сайтов. Более 1600 иконок в бесплатной версии.</p>
+                    </div>
+                    <div class="card">
+                        <h3><i class="fas fa-italic"></i> Adobe Fonts</h3>
+                        <p>Качественные платные шрифты для профессиональных проектов.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="inner-content" id="design-tools">
+                <h3>Инструменты для веб-дизайна</h3>
+                <p>Правильные инструменты упрощают процесс разработки. Вот список полезных программ и сервисов для создания сайтов.</p>
+                
+                <h4>Редакторы кода:</h4>
+                <div class="tools-list">
+                    <div class="tool">Visual Studio Code</div>
+                    <div class="tool">Sublime Text</div>
+                    <div class="tool">Atom</div>
+                    <div class="tool">WebStorm</div>
+                    <div class="tool">Brackets</div>
+                </div>
+                
+                <h4>Графические редакторы и инструменты для дизайна:</h4>
+                <div class="tools-list">
+                    <div class="tool">Figma</div>
+                    <div class="tool">Adobe XD</div>
+                    <div class="tool">Sketch</div>
+                    <div class="tool">Photoshop</div>
+                    <div class="tool">Canva</div>
+                    <div class="tool">GIMP</div>
+                </div>
+                
+                <h4>Полезные онлайн-инструменты:</h4>
+                <ul class="resource-list">
+                    <li><strong>CodePen</strong> - онлайн-редактор для фронтенд-разработки с мгновенным предпросмотром</li>
+                    <li><strong>GitHub</strong> - хостинг для хранения кода и совместной работы</li>
+                    <li><strong>Canva</strong> - создание графики без навыков дизайнера</li>
+                    <li><strong>Google Fonts</strong> - бесплатные шрифты для сайтов</li>
+                    <li><strong>Font Awesome</strong> - иконки для веб-сайтов</li>
+                    <li><strong>Unsplash</strong> - бесплатные стоковые фотографии</li>
+                    <li><strong>Remove.bg</strong> - удаление фона с изображений</li>
+                </ul>
+            </div>
+        </section>
+        
+        <!-- Секция Публикация -->
+        <section id="publishing" class="content-section">
+            <h2><i class="fas fa-cloud-upload-alt"></i> Публикация сайта</h2>
+            <p>После того как вы создали сайт, его нужно разместить в интернете, чтобы его могли увидеть другие пользователи. Этот процесс называется деплоем (развертыванием).</p>
+            
+            <div class="inner-tabs">
+                <button class="inner-tab active" data-inner="github-pages">GitHub Pages</button>
+                <button class="inner-tab" data-inner="netlify">Netlify</button>
+                <button class="inner-tab" data-inner="vercel">Vercel</button>
+                <button class="inner-tab" data-inner="comparison">Сравнение</button>
+            </div>
+            
+            <div class="inner-content active" id="github-pages">
+                <h3><i class="fab fa-github"></i> Публикация сайта на GitHub Pages</h3>
+                <p>GitHub Pages — это бесплатный хостинг от GitHub для статических сайтов. Он идеально подходит для личных сайтов, документации и проектов.</p>
+                
+                <div class="platform-guide">
+                    <div class="platform-header">
+                        <i class="fab fa-github"></i>
+                        <h4>GitHub Pages - пошаговая инструкция</h4>
+                    </div>
+                    <div class="platform-steps">
+                        <div class="step">
+                            <div class="step-number">1</div>
+                            <div>
+                                <h4>Создайте аккаунт на GitHub</h4>
+                                <p>Если у вас ещё нет аккаунта, зарегистрируйтесь на <a href="https://github.com" target="_blank">github.com</a>.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="step">
+                            <div class="step-number">2</div>
+                            <div>
+                                <h4>Создайте новый репозиторий</h4>
+                                <p>Назовите его <code>username.github.io</code>, где <code>username</code> — ваш логин на GitHub.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="step">
+                            <div class="step-number">3</div>
+                            <div>
+                                <h4>Загрузите файлы вашего сайта</h4>
+                                <p>Загрузите HTML, CSS, JS файлы и другие ресурсы в репозиторий. Главный HTML-файл должен называться <code>index.html</code>.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="step">
+                            <div class="step-number">4</div>
+                            <div>
+                                <h4>Включите GitHub Pages</h4>
+                                <p>В настройках репозитория найдите раздел "Pages" и выберите ветку <code>main</code> как источник.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="step">
+                            <div class="step-number">5</div>
+                            <div>
+                                <h4>Дождитесь публикации</h4>
+                                <p>GitHub автоматически опубликует ваш сайт. Обычно это занимает 1-2 минуты. Ваш сайт будет доступен по адресу <code>https://username.github.io</code>.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="highlight">
+                    <p><strong>Преимущества GitHub Pages:</strong> бесплатно, простота использования, интеграция с Git, поддержка кастомных доменов, SSL-сертификат включен.</p>
+                </div>
+            </div>
+            
+            <div class="inner-content" id="netlify">
+                <h3><i class="fas fa-cloud-upload-alt"></i> Публикация сайта на Netlify</h3>
+                <p>Netlify — это мощная платформа для развертывания веб-проектов с поддержкой непрерывного развертывания, SSL, форм и функций сервера.</p>
+                
+                <div class="platform-guide">
+                    <div class="platform-header">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <h4>Netlify - пошаговая инструкция</h4>
+                    </div>
+                    <div class="platform-steps">
+                        <div class="step">
+                            <div class="step-number">1</div>
+                            <div>
+                                <h4>Создайте аккаунт на Netlify</h4>
+                                <p>Зарегистрируйтесь на <a href="https://netlify.com" target="_blank">netlify.com</a> используя email, GitHub, GitLab или Bitbucket.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="step">
+                            <div class="step-number">2</div>
+                            <div>
+                                <h4>Загрузите файлы сайта</h4>
+                                <p>На главной странице Netlify перетащите папку с файлами вашего сайта в область "Drag and drop your site folder here".</p>
+                            </div>
+                        </div>
+                        
+                        <div class="step">
+                            <div class="step-number">3</div>
+                            <div>
+                                <h4>Или подключите Git-репозиторий</h4>
+                                <p>Нажмите "New site from Git", выберите ваш Git-провайдер (GitHub, GitLab, Bitbucket) и репозиторий с сайтом.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="step">
+                            <div class="step-number">4</div>
+                            <div>
+                                <h4>Настройте сборку (опционально)</h4>
+                                <p>Если ваш сайт использует сборщики (как React, Vue), укажите команды сборки. Для простых HTML/CSS сайтов настройки не требуются.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="step">
+                            <div class="step-number">5</div>
+                            <div>
+                                <h4>Сайт опубликован!</h4>
+                                <p>Netlify автоматически присвоит вашему сайту уникальный URL (например, <code>https://amazing-site-12345.netlify.app</code>). Вы можете настроить кастомный домен.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="highlight">
+                    <p><strong>Преимущества Netlify:</strong> автоматическое SSL, непрерывное развертывание, формы, функции сервера, разделение на окружения (production/preview), поддержка редиректов.</p>
+                </div>
+            </div>
+            
+            <div class="inner-content" id="vercel">
+                <h3><i class="fas fa-bolt"></i> Публикация сайта на Vercel</h3>
+                <p>Vercel — это платформа для фронтенд-разработчиков, созданная командой Next.js. Она отлично подходит для современных веб-приложений и статических сайтов.</p>
+                
+                <div class="platform-guide">
+                    <div class="platform-header">
+                        <i class="fas fa-bolt"></i>
+                        <h4>Vercel - пошаговая инструкция</h4>
+                    </div>
+                    <div class="platform-steps">
+                        <div class="step">
+                            <div class="step-number">1</div>
+                            <div>
+                                <h4>Создайте аккаунт на Vercel</h4>
+                                <p>Зарегистрируйтесь на <a href="https://vercel.com" target="_blank">vercel.com</a> используя GitHub, GitLab или Bitbucket.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="step">
+                            <div class="step-number">2</div>
+                            <div>
+                                <h4>Импортируйте Git-репозиторий</h4>
+                                <p>Нажмите "Add New" → "Project", выберите Git-провайдер и репозиторий с вашим сайтом.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="step">
+                            <div class="step-number">3</div>
+                            <div>
+                                <h4>Настройте проект</h4>
+                                <p>Для статических HTML/CSS сайтов Vercel определит настройки автоматически. Если нужно, измените настройки сборки.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="step">
+                            <div class="step-number">4</div>
+                            <div>
+                                <h4>Дождитесь деплоя</h4>
+                                <p>Vercel автоматически развернет ваш сайт. Процесс обычно занимает меньше минуты.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="step">
+                            <div class="step-number">5</div>
+                            <div>
+                                <h4>Настройте кастомный домен</h4>
+                                <p>В настройках проекта добавьте кастомный домен. Vercel автоматически настроит SSL-сертификат.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="highlight">
+                    <p><strong>Преимущества Vercel:</strong> отличная производительность, автоматическое SSL, интеграция с Next.js, серверные функции, предварительный просмотр для pull requests.</p>
+                </div>
+            </div>
+            
+            <div class="inner-content" id="comparison">
+                <h3>Сравнение платформ для публикации</h3>
+                
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Функция</th>
+                            <th>GitHub Pages</th>
+                            <th>Netlify</th>
+                            <th>Vercel</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Бесплатный тариф</td>
+                            <td>✅ Да</td>
+                            <td>✅ Да</td>
+                            <td>✅ Да</td>
+                        </tr>
+                        <tr>
+                            <td>SSL-сертификат</td>
+                            <td>✅ Да</td>
+                            <td>✅ Да (авто)</td>
+                            <td>✅ Да (авто)</td>
+                        </tr>
+                        <tr>
+                            <td>Кастомный домен</td>
+                            <td>✅ Да</td>
+                            <td>✅ Да</td>
+                            <td>✅ Да</td>
+                        </tr>
+                        <tr>
+                            <td>CI/CD</td>
+                            <td>✅ GitHub Actions</td>
+                            <td>✅ Встроенный</td>
+                            <td>✅ Встроенный</td>
+                        </tr>
+                        <tr>
+                            <td>Формы</td>
+                            <td>❌ Нет</td>
+                            <td>✅ Да (бесплатно до 100)</td>
+                            <td>❌ Нет</td>
+                        </tr>
+                        <tr>
+                            <td>Функции сервера</td>
+                            <td>❌ Нет</td>
+                            <td>✅ Да (бесплатно)</td>
+                            <td>✅ Да (бесплатно)</td>
+                        </tr>
+                        <tr>
+                            <td>CDN</td>
+                            <td>✅ Да</td>
+                            <td>✅ Да</td>
+                            <td>✅ Да</td>
+                        </tr>
+                        <tr>
+                            <td>Лучше для</td>
+                            <td>Простые сайты, документация</td>
+                            <td>Статические сайты, формы</td>
+                            <td>Приложения Next.js, фронтенд</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <div class="highlight">
+                    <p><strong>Рекомендация для начинающих:</strong> начните с GitHub Pages, так как это самый простой вариант. Когда освоитесь, попробуйте Netlify или Vercel для более продвинутых функций.</p>
+                </div>
+                
+                <h4>Общие шаги для публикации любого сайта:</h4>
+                <ol class="resource-list">
+                    <li><strong>Выберите хостинг-провайдера</strong> - компанию, которая будет хранить файлы вашего сайта на своих серверах.</li>
+                    <li><strong>Купите доменное имя</strong> - адрес вашего сайта в интернете (например, mywebsite.com).</li>
+                    <li><strong>Загрузите файлы на сервер</strong> - используйте FTP-клиент или встроенные инструменты хостинга.</li>
+                    <li><strong>Настройте DNS</strong> - свяжите доменное имя с сервером хостинга.</li>
+                    <li><strong>Протестируйте сайт</strong> - убедитесь, что все работает корректно на разных устройствах.</li>
+                </ol>
+            </div>
+        </section>
+        
+        <footer>
+            <p>© 2023 Полное руководство по созданию сайтов. Этот сайт создан в качестве примера с использованием HTML, CSS и JavaScript.</p>
+            <p>Все материалы предназначены для образовательных целей. Код этого сайта можно свободно использовать в своих проектах.</p>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Основные вкладки
+            const mainTabs = document.querySelectorAll('.main-tab');
+            const contentSections = document.querySelectorAll('.content-section');
+            
+            mainTabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    // Убираем активный класс у всех вкладок и секций
+                    mainTabs.forEach(t => t.classList.remove('active'));
+                    contentSections.forEach(section => section.classList.remove('active'));
+                    
+                    // Добавляем активный класс текущей вкладке
+                    tab.classList.add('active');
+                    
+                    // Показываем соответствующую секцию
+                    const sectionId = tab.getAttribute('data-section');
+                    const activeSection = document.getElementById(sectionId);
+                    activeSection.classList.add('active');
+                    
+                    // Прокрутка к секции
+                    setTimeout(() => {
+                        activeSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }, 100);
+                });
+            });
+            
+            // Внутренние вкладки
+            const setupInnerTabs = () => {
+                const innerTabs = document.querySelectorAll('.inner-tab');
+                const innerContents = document.querySelectorAll('.inner-content');
+                
+                innerTabs.forEach(tab => {
+                    tab.addEventListener('click', () => {
+                        const parentSection = tab.closest('.content-section');
+                        const innerTabsInSection = parentSection.querySelectorAll('.inner-tab');
+                        const innerContentsInSection = parentSection.querySelectorAll('.inner-content');
+                        
+                        // Убираем активный класс у всех вкладок и контента в этой секции
+                        innerTabsInSection.forEach(t => t.classList.remove('active'));
+                        innerContentsInSection.forEach(c => c.classList.remove('active'));
+                        
+                        // Добавляем активный класс текущей вкладке
+                        tab.classList.add('active');
+                        
+                        // Показываем соответствующий контент
+                        const contentId = tab.getAttribute('data-inner');
+                        const activeContent = parentSection.querySelector(`#${contentId}`);
+                        if (activeContent) {
+                            activeContent.classList.add('active');
+                        }
+                    });
+                });
+            };
+            
+            // Инициализируем внутренние вкладки при загрузке и при смене секций
+            setupInnerTabs();
+            
+            // Переинициализация при смене основных вкладок
+            mainTabs.forEach(tab => {
+                tab.addEventListener('click', setupInnerTabs);
+            });
+            
+            // Анимация появления элементов
+            const animateElements = () => {
+                const elements = document.querySelectorAll('.card, .html-element, .step, .tool');
+                
+                elements.forEach(element => {
+                    const elementPosition = element.getBoundingClientRect().top;
+                    const screenPosition = window.innerHeight / 1.2;
+                    
+                    if (elementPosition < screenPosition) {
+                        element.style.opacity = '1';
+                        element.style.transform = 'translateY(0)';
+                    }
+                });
+            };
+            
+            // Инициализация стилей для анимации
+            document.querySelectorAll('.card, .html-element, .step, .tool').forEach(el => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(20px)';
+                el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+            });
+            
+            // Запускаем анимацию при загрузке и скролле
+            window.addEventListener('load', animateElements);
+            window.addEventListener('scroll', animateElements);
+            
+            // Инициализация первой анимации
+            setTimeout(animateElements, 300);
+            
+            // Интерактивность для кода
+            document.querySelectorAll('.code-block').forEach(block => {
+                block.addEventListener('click', function() {
+                    const text = this.innerText;
+                    navigator.clipboard.writeText(text).then(() => {
+                        const original = this.innerHTML;
+                        this.innerHTML = '<span style="color: #2ecc71;">Код скопирован в буфер обмена!</span>';
+                        setTimeout(() => {
+                            this.innerHTML = original;
+                        }, 1500);
+                    });
+                });
+            });
+            
+            // Интерактивность для карточек
+            const cards = document.querySelectorAll('.card');
+            cards.forEach(card => {
+                card.addEventListener('click', function() {
+                    this.style.transform = 'scale(0.98)';
+                    setTimeout(() => {
+                        this.style.transform = '';
+                    }, 150);
+                });
+            });
+        });
+    </script>
+</body>
+</html>
